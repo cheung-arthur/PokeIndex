@@ -1,54 +1,41 @@
 package com.example.randompet
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import com.bumptech.glide.Glide
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.codepath.asynchttpclient.AsyncHttpClient
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler
 import okhttp3.Headers
 
 class MainActivity : AppCompatActivity() {
-    var petImageURL = ""
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: PokemonAdapter
+    private var pokemonList = mutableListOf<Pokemon>()
 
-    var pokemonName = ""
-
-    var pokemonTypes = ""
-
-    private var maxPokemonId = 807  // Set the maximum Pokemon ID based on the available Pokemon (adjust this as needed).
+    private var maxPokemonId = 807
 
     private fun getRandomPokemonId(): Int {
-        // Generate a random Pokemon ID within the available range (1 to maxPokemonId).
         return (1..maxPokemonId).random()
     }
 
     private fun getPokemonURL(pokemonId: Int) {
         val client = AsyncHttpClient()
         client["https://pokeapi.co/api/v2/pokemon/$pokemonId", object : JsonHttpResponseHandler() {
-            override fun onSuccess(statusCode: Int, headers: Headers, json: JsonHttpResponseHandler.JSON) {
-                Log.d("Dog", "response successful$json")
-
-                petImageURL = json.jsonObject
-                    .getJSONObject("sprites")
-                    .getString("front_default")
-
-                pokemonName = json.jsonObject
-                    .getString("name")
-
-                val types = json.jsonObject.getJSONArray("types")
-                val typeStringBuilder = StringBuilder()
-                for (i in 0 until types.length()) {
-                    val typeName = types.getJSONObject(i).getJSONObject("type").getString("name")
-                    typeStringBuilder.append(typeName)
-                    if (i < types.length() - 1) {
-                        typeStringBuilder.append(", ")
-                    }
+            override fun onSuccess(statusCode: Int, headers: Headers, json: JSON) {
+                val imageUrl = json.jsonObject.getJSONObject("sprites").getString("front_default")
+                val name = json.jsonObject.getString("name")
+                val typesArray = json.jsonObject.getJSONArray("types")
+                val typesList = (0 until typesArray.length()).map {
+                    typesArray.getJSONObject(it).getJSONObject("type").getString("name")
                 }
-                pokemonTypes = typeStringBuilder.toString()
+                val types = typesList.joinToString(", ")
+                val pokemon = Pokemon(imageUrl, name, types)
 
+                pokemonList.add(pokemon)
+                adapter.notifyDataSetChanged()
             }
 
             override fun onFailure(
@@ -57,40 +44,39 @@ class MainActivity : AppCompatActivity() {
                 errorResponse: String,
                 throwable: Throwable?
             ) {
-                Log.d("Dog Error", errorResponse)
+                Log.d("Pokemon Error", errorResponse)
             }
         }]
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        recyclerView = findViewById(R.id.recyclerView)
+        adapter = PokemonAdapter(pokemonList)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        getPokemonURL(1)
-        Log.d("petImageURL", "pet image URL set")
-
-        val button = findViewById<Button>(R.id.petButton)
-        val image = findViewById<ImageView>(R.id.petImage)
-        val name = findViewById<TextView>(R.id.pokemonNameView)
-        val typeInit = findViewById<TextView>(R.id.typeView)
-
-        getNextPokemon(button,image, name, typeInit)
-    }
-
-    private fun getNextPokemon(button: Button, imageView: ImageView, name: TextView, type: TextView) {
-        button.setOnClickListener {
-            getPokemonURL(getRandomPokemonId())
-
-            Glide.with(this)
-                .load(petImageURL)
-                .fitCenter()
-                .into(imageView)
-
-            name.text = "Name: "+ pokemonName
-            type.text = "Types: "+ pokemonTypes
+        for (i in 1..20) {
+            getNextPokemon()
         }
 
+        val btnGenerate: Button = findViewById(R.id.button)
+        btnGenerate.setOnClickListener {
+            regeneratePokemonList()
+        }
+    }
+
+    private fun getNextPokemon() {
+        val randomPokemonId = getRandomPokemonId()
+        getPokemonURL(randomPokemonId)
+    }
+
+    private fun regeneratePokemonList() {
+        pokemonList.clear()
+        for (i in 1..20) {
+            getNextPokemon()
+        }
     }
 }

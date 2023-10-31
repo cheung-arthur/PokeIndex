@@ -2,4 +2,19 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="pokemonblue">#3B4CCA</color>
+    <color name="pokemonyellow">#B3A125</color>
+    <color name="pokemonred">#CC0000</color>
+    <color name="fire">#ED2207</color>
+    <color name="water">#069EEF</color>
+    <color name="electric">#FFD300</color>
+    <color name="grass">#318E00</color>
+    <color name="ground">#7E3708</color>
+    <color name="poison">#6B34D1</color>
+    <color name="fairy">#E89DE0</color>
+    <color name="psychic">#DC18C7</color>
+    <color name="ghost">#756D74</color>
+    <color name="fighting">#6E0000</color>
+    <color name="ice">#1FFFD2</color>
+
 </resources>

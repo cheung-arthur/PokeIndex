@@ -3,7 +3,58 @@
     <style name="Base.Theme.RandomPet" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:navigationBarColor">@color/pokemonblue</item>
+        <item name="android:statusBarColor">@color/pokemonblue</item>
+        <item name="android:fontFamily">@font/patua_one</item>
+        <item name = "android:background">@color/pokemonyellow</item>
     </style>
 
+    <style name="PokemonFireType">
+        <item name="android:textColor">@color/fire</item>
+    </style>
+    <style name="PokemonWaterType">
+        <item name="android:textColor">@color/water</item>
+    </style>
+    <style name="PokemonElectricType">
+        <item name="android:textColor">@color/electric</item>
+    </style>
+    <style name="PokemonGrassType">
+        <item name="android:textColor">@color/grass</item>
+    </style>
+    <style name="PokemonGroundType">
+        <item name="android:textColor">@color/ground</item>
+    </style>
+    <style name="PokemonPoisonType">
+        <item name="android:textColor">@color/poison</item>
+    </style>
+    <style name="PokemonFairyType">
+        <item name="android:textColor">@color/fairy</item>
+    </style>
+    <style name="PokemonPsychicType">
+        <item name="android:textColor">@color/psychic</item>
+    </style>
+    <style name="PokemonGhostType">
+        <item name="android:textColor">@color/ghost</item>
+    </style>
+    <style name="PokemonDarkType">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="PokemonFightingType">
+        <item name="android:textColor">@color/fighting</item>
+    </style>
+    <style name="PokemonIceType">
+        <item name="android:textColor">@color/ice</item>
+    </style>
+
+    <style name="TextAppearance.Title" parent="Base.Theme.RandomPet">
+        <item name="android:textSize">30dp</item>
+        <item name="android:textColor">@color/pokemonred</item>
+        <item name="android:fontFamily">@font/press_start_2p</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+
     <style name="Theme.RandomPet" parent="Base.Theme.RandomPet" />
+
+
 </resources>
